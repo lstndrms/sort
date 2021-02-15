@@ -4,8 +4,8 @@
 #include <time.h>
 #include <math.h>
 
-#define LOW -(double)10000//INT_MAX
-#define HIGH (double)10000//INT_MAX
+#define LOW -(double)INT_MAX
+#define HIGH (double)INT_MAX
 
 void rand_d(double *a, int n) {
     for (int i = 0;i < n;i++) {
@@ -55,8 +55,6 @@ void heapsort(double *a, int n) {
         heapify(a, i, 0);
     }
 }
-
-asdhjkaksdajksd
 
 signed main(void) {
 
