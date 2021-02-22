@@ -177,7 +177,6 @@ int main(void) {
             }
             printf("\n");
         }
-        correct = 0;
         if (!correct) {
             printf("An error  occurred\n");
             if (flg != 'Y' && flg != 'y') {
