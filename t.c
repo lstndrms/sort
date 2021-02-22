@@ -101,7 +101,7 @@ int main(void) {
         //type = 3 - случайные числа
         //n - длина массива
         int n, type;
-        input_begin: ;
+        
         getchar();
         printf("Array length: ");
         scanf("%d", &n);
@@ -124,7 +124,7 @@ int main(void) {
 
         if (!a || !b || !inp) {
             printf("Memory allocation fault\n");
-            goto input_begin;
+            continue;
         }
         getchar();
         char flg;
