@@ -89,8 +89,6 @@ int main(void) {
         printf("Number of tests: ");
         scanf("%d", &test_cases);
         printf("\n");
-        if (test_cases <= 0)
-            printf("Wrong value: expected positive integer\n");
     }
 
     for (int t = 0; t < test_cases; t++) {
@@ -98,31 +96,27 @@ int main(void) {
         //type - тип сгенерированного массива, вводится
         //type = 1 - упорядочен
         //type = 2 - обратный порядок
-        //type = 3 - случайные числа
+        //type > 2 - случайные числа
         //n - длина массива
         int n, type;
         input_begin: ;
         getchar();
         printf("Array length: ");
         scanf("%d", &n);
-        while (n <= 0) {
-            printf("\nWrong value: expected positive integer\nArray length: ");
-            scanf("%d", &n);
-        }
         printf("\nArray type(1 - straight, 2 - reverse, 3 - random): ");
         scanf("%d", &type);
-        while (type <= 0 || type > 3) {
-            printf("\nWrong value: 1, 2, 3 expected\nArray type(1 - straight, 2 - reverse, 3 - random): ");
-            scanf("%d", &type);
+        printf("\n");
 
+        if (n <= 0 || type <= 0 || type > 3) {
+            printf("Wrong input\n");
+            goto input_begin;
         }
         //end of input
 
         double *a = (double*)calloc(n, sizeof(double)),
-               *b = (double*)calloc(n, sizeof(double)),
-               *inp = (double*)calloc(n, sizeof(double));
+               *b = (double*)calloc(n, sizeof(double));
 
-        if (!a || !b || !inp) {
+        if (!a) {
             printf("Memory allocation fault\n");
             goto input_begin;
         }
@@ -139,8 +133,7 @@ int main(void) {
 
         if (flg == 'Y' || flg == 'y')
             printf("Input\n");
-        for (int i = 0; i < n; i++) {
-            inp[i] = a[i];
+        for (int i = 0;i < n;i++) {
             b[i] = a[i];
             if (flg == 'Y' || flg == 'y') {
                 printf("%f ", a[i]);
@@ -160,7 +153,7 @@ int main(void) {
 
         //кол-во сравнений и перестановок
         printf("\n------>\nSHELL:\ncompares: %d, swaps: %d\n", cnt_cmp_shell, cnt_swap_shell);
-        printf("HEAP:\ncompares: %d, swaps: %d\n------>\n", cnt_cmp_heap, cnt_swap_heap);
+        printf("HEAP:\ncompares: %d, swaps: %d\n", cnt_cmp_heap, cnt_swap_heap);
 
         //проверка на корректность
         _Bool correct = 1;
@@ -170,6 +163,10 @@ int main(void) {
             }
 
         }
+        if (!correct) {
+            printf("An error  occurred\n");
+            break;
+        }
         if (flg == 'Y' || flg == 'y') {
             printf("Result:\n");
             for (int i = 0; i < n; i++) {
@@ -177,36 +174,9 @@ int main(void) {
             }
             printf("\n");
         }
-        correct = 0;
-        if (!correct) {
-            printf("An error  occurred\n");
-            if (flg != 'Y' && flg != 'y') {
-                printf("Debug (Y/N): ");
-                getchar();
-                scanf("%c", &flg);
-                if (flg == 'Y' || flg == 'y') {
-                    printf("\nInput: \n");
-                    for (int i = 0; i < n; i++) {
-                        printf("%f ", inp[i]);
-                    }
-                    printf("\n\nResult (shell):\n");
-                    for (int i = 0; i < n; i++) {
-                        printf("%f ", a[i]);
-                    }
-                    printf("\n");
-                    printf("\nResult (heap):\n");
-                    for (int i = 0; i < n; i++) {
-                        printf("%f ", b[i]);
-                    }
-                    printf("\n\n\n");
-                }
-            }
-        }
-
 
         free(a);
         free(b);
-        free(inp);
     }
     return 0;
 }
