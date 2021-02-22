@@ -8,7 +8,7 @@
 #define HIGH (double)(INT_MAX / 2 - 1)
 
 void rand_d(double *a, int n, int type) {
-    for (int i = 0; i < n; i++) {
+    for (int i = 0;i < n; i++) {
         if (type == 1) {//сгенерированный массив упорядочен
             a[i] = (double)(n - i);
         }
@@ -31,9 +31,9 @@ void shellsort(double *a, int n, int *c_swp, int *c_cmp) {
     //последовательности Седжвика или Пратта дают лучшую асимптотику
     for (int s = n / 2; s > 0; s /= 2) {//s - шаг
         //выполним сортировку вставками для подможества элементов на расстоянии s
-        for (int i = s; i < n; i++) {
+        for (int i = s; i < n;i++) {
             double tmp = a[i];
-            for (j = i; (j >= s) && (fabs(a[j - s]) < fabs(tmp)); j -= s) {
+            for (j = i;(j >= s) && (fabs(a[j - s]) < fabs(tmp)); j -= s) {
                 a[j] = a[j - s];
                 (*c_cmp)++;
                 (*c_swp)++;
@@ -68,7 +68,7 @@ void heapify(double *a, int n, int i, int *c_swp, int *c_cmp) {
 
 void heapsort(double *a, int n, int *c_swp, int *c_cmp) {
     //построение
-    for (int i = n / 2 - 1; i >= 0; i--){
+    for (int i = n / 2 - 1;i >= 0; i--){
         heapify(a, n, i, c_swp, c_cmp);
     }
     for (int i = n - 1; i >= 0; i--){
@@ -80,8 +80,8 @@ void heapsort(double *a, int n, int *c_swp, int *c_cmp) {
     }
 }
 
-int main(void) {
-    srand((int)time(NULL));
+signed main(void) {
+    srand((int)time(0));
     //количество тестов
     int test_cases = -1;
 
@@ -89,6 +89,8 @@ int main(void) {
         printf("Number of tests: ");
         scanf("%d", &test_cases);
         printf("\n");
+        if (test_cases <= 0)
+            printf("Wrong value: expected positive integer\n");
     }
 
     for (int t = 0; t < test_cases; t++) {
@@ -96,27 +98,31 @@ int main(void) {
         //type - тип сгенерированного массива, вводится
         //type = 1 - упорядочен
         //type = 2 - обратный порядок
-        //type > 2 - случайные числа
+        //type = 3 - случайные числа
         //n - длина массива
         int n, type;
         input_begin: ;
         getchar();
         printf("Array length: ");
         scanf("%d", &n);
+        while (n <= 0) {
+            printf("\nWrong value: expected positive integer\nArray length: ");
+            scanf("%d", &n);
+        }
         printf("\nArray type(1 - straight, 2 - reverse, 3 - random): ");
         scanf("%d", &type);
-        printf("\n");
+        while (type <= 0 || type > 3) {
+            printf("\nWrong value: 1, 2, 3 expected\nArray type(1 - straight, 2 - reverse, 3 - random): ");
+            scanf("%d", &type);
 
-        if (n <= 0 || type <= 0 || type > 3) {
-            printf("Wrong input\n");
-            goto input_begin;
         }
         //end of input
 
         double *a = (double*)calloc(n, sizeof(double)),
-               *b = (double*)calloc(n, sizeof(double));
+               *b = (double*)calloc(n, sizeof(double)),
+               *inp = (double*)calloc(n, sizeof(double));
 
-        if (!a) {
+        if (!a || !b || !inp) {
             printf("Memory allocation fault\n");
             goto input_begin;
         }
@@ -134,6 +140,7 @@ int main(void) {
         if (flg == 'Y' || flg == 'y')
             printf("Input\n");
         for (int i = 0;i < n;i++) {
+            inp[i] = a[i];
             b[i] = a[i];
             if (flg == 'Y' || flg == 'y') {
                 printf("%f ", a[i]);
@@ -153,7 +160,7 @@ int main(void) {
 
         //кол-во сравнений и перестановок
         printf("\n------>\nSHELL:\ncompares: %d, swaps: %d\n", cnt_cmp_shell, cnt_swap_shell);
-        printf("HEAP:\ncompares: %d, swaps: %d\n", cnt_cmp_heap, cnt_swap_heap);
+        printf("HEAP:\ncompares: %d, swaps: %d\n------>\n", cnt_cmp_heap, cnt_swap_heap);
 
         //проверка на корректность
         _Bool correct = 1;
@@ -163,10 +170,6 @@ int main(void) {
             }
 
         }
-        if (!correct) {
-            printf("An error  occurred\n");
-            break;
-        }
         if (flg == 'Y' || flg == 'y') {
             printf("Result:\n");
             for (int i = 0; i < n; i++) {
@@ -174,9 +177,36 @@ int main(void) {
             }
             printf("\n");
         }
+        correct = 0;
+        if (!correct) {
+            printf("An error  occurred\n");
+            if (flg != 'Y' && flg != 'y') {
+                printf("Debug (Y/N): ");
+                getchar();
+                scanf("%c", &flg);
+                if (flg == 'Y' || flg == 'y') {
+                    printf("\nInput: \n");
+                    for (int i = 0; i < n; i++) {
+                        printf("%f ", inp[i]);
+                    }
+                    printf("\n\nResult (shell):\n");
+                    for (int i = 0; i < n; i++) {
+                        printf("%f ", a[i]);
+                    }
+                    printf("\n");
+                    printf("\nResult (heap):\n");
+                    for (int i = 0; i < n; i++) {
+                        printf("%f ", b[i]);
+                    }
+                    printf("\n\n\n");
+                }
+            }
+        }
+
 
         free(a);
         free(b);
+        free(inp);
     }
     return 0;
 }
