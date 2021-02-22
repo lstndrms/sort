@@ -165,7 +165,7 @@ int main(void) {
         //проверка на корректность
         _Bool correct = 1;
         for (int i = 0; (i < n - 1) && correct; i++) {
-            if (fabs(fabs(a[i]) - fabs(b[i])) > 1e-7 || fabs(a[i]) - fabs(a[i + 1]) < .0) {
+            if (fabs(b[i]) - fabs(b[i + 1]) < .0 || fabs(a[i]) - fabs(a[i + 1]) < .0) {
                 correct = 0;
             }
 
