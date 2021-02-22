@@ -8,7 +8,7 @@
 #define HIGH (double)(INT_MAX / 2 - 1)
 
 void rand_d(double *a, int n, int type) {
-    for (int i = 0;i < n; i++) {
+    for (int i = 0; i < n; i++) {
         if (type == 1) {//сгенерированный массив упорядочен
             a[i] = (double)(n - i);
         }
@@ -31,9 +31,9 @@ void shellsort(double *a, int n, int *c_swp, int *c_cmp) {
     //последовательности Седжвика или Пратта дают лучшую асимптотику
     for (int s = n / 2; s > 0; s /= 2) {//s - шаг
         //выполним сортировку вставками для подможества элементов на расстоянии s
-        for (int i = s; i < n;i++) {
+        for (int i = s; i < n; i++) {
             double tmp = a[i];
-            for (j = i;(j >= s) && (fabs(a[j - s]) < fabs(tmp)); j -= s) {
+            for (j = i; (j >= s) && (fabs(a[j - s]) < fabs(tmp)); j -= s) {
                 a[j] = a[j - s];
                 (*c_cmp)++;
                 (*c_swp)++;
@@ -68,7 +68,7 @@ void heapify(double *a, int n, int i, int *c_swp, int *c_cmp) {
 
 void heapsort(double *a, int n, int *c_swp, int *c_cmp) {
     //построение
-    for (int i = n / 2 - 1;i >= 0; i--){
+    for (int i = n / 2 - 1; i >= 0; i--){
         heapify(a, n, i, c_swp, c_cmp);
     }
     for (int i = n - 1; i >= 0; i--){
@@ -80,8 +80,8 @@ void heapsort(double *a, int n, int *c_swp, int *c_cmp) {
     }
 }
 
-signed main(void) {
-    srand((int)time(0));
+int main(void) {
+    srand((int)time(NULL));
     //количество тестов
     int test_cases = -1;
 
@@ -139,7 +139,7 @@ signed main(void) {
 
         if (flg == 'Y' || flg == 'y')
             printf("Input\n");
-        for (int i = 0;i < n;i++) {
+        for (int i = 0; i < n; i++) {
             inp[i] = a[i];
             b[i] = a[i];
             if (flg == 'Y' || flg == 'y') {
