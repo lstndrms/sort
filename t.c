@@ -158,7 +158,7 @@ int main(void) {
 
         //кол-во сравнений и перестановок
         printf("\n------>\nSHELL:\ncompares: %d, swaps: %d\n", cnt_cmp_shell, cnt_swap_shell);
-        printf("HEAP:\ncompares: %d, swaps: %d\n------>\n", cnt_cmp_heap + 1, cnt_swap_heap);
+        printf("HEAP:\ncompares: %d, swaps: %d\n------>\n", cnt_cmp_heap, cnt_swap_heap);
 
         //проверка на корректность
         _Bool correct = 1;
