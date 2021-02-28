@@ -4,8 +4,8 @@
 #include <time.h>
 #include <math.h>
 
-#define LOW -(double)(INT_MAX / 2 - 1)
-#define HIGH (double)(INT_MAX / 2 - 1)
+#define LOW -(double)100//(INT_MAX / 2 - 1)
+#define HIGH (double)100//(INT_MAX / 2 - 1)
 
 void rand_d(double *a, int n, int type) {
     for (int i = 0; i < n; i++) {
@@ -17,7 +17,7 @@ void rand_d(double *a, int n, int type) {
         }
         else {
             double d = (double)rand()/((double)RAND_MAX + 1);// (0, 1)
-            d = LOW + d * (HIGH - LOW);// случайное число между LOW и HIGH
+            d = round(LOW + d * (HIGH - LOW));// случайное число между LOW и HIGH
             a[i] = d;
         }
     }
@@ -38,9 +38,8 @@ void shellsort(double *a, int n, int *c_swp, int *c_cmp) {
                 (*c_cmp)++;
                 (*c_swp)++;
             }
-            (*c_cmp)++;
-            if (j != i)
-                (*c_swp)++;
+            if (j == i)
+                (*c_cmp)++;
             a[j] = tmp;
         }
     }
@@ -55,7 +54,7 @@ void heapify(double *a, int n, int i, int *c_swp, int *c_cmp) {
     }
     if (r < n && fabs(a[r]) - fabs(a[lg]) <= .0)
         lg = r;
-    (*c_cmp) += 2;
+    (*c_cmp) += ((l < n) ? 1 : 0) + ((r < n) ? 1 : 0);
     //если элемент i "упал" в поддерево построим кучу для поддерева
     if (lg != i) {
         double tmp = a[i];
@@ -71,7 +70,7 @@ void heapsort(double *a, int n, int *c_swp, int *c_cmp) {
     for (int i = n / 2 - 1; i >= 0; i--){
         heapify(a, n, i, c_swp, c_cmp);
     }
-    for (int i = n - 1; i >= 0; i--){
+    for (int i = n - 1; i > 0; i--){
         double tmp = a[0];
         a[0] = a[i];
         a[i] = tmp;
@@ -92,7 +91,6 @@ int main(void) {
         if (test_cases <= 0)
             printf("Wrong value: expected positive integer\n");
     }
-
     for (int t = 0; t < test_cases; t++) {
         //input
         //type - тип сгенерированного массива, вводится
@@ -101,7 +99,7 @@ int main(void) {
         //type = 3 - случайные числа
         //n - длина массива
         int n, type;
-        
+
         getchar();
         printf("Array length: ");
         scanf("%d", &n);
@@ -160,7 +158,7 @@ int main(void) {
 
         //кол-во сравнений и перестановок
         printf("\n------>\nSHELL:\ncompares: %d, swaps: %d\n", cnt_cmp_shell, cnt_swap_shell);
-        printf("HEAP:\ncompares: %d, swaps: %d\n------>\n", cnt_cmp_heap, cnt_swap_heap);
+        printf("HEAP:\ncompares: %d, swaps: %d\n------>\n", cnt_cmp_heap + 1, cnt_swap_heap);
 
         //проверка на корректность
         _Bool correct = 1;
